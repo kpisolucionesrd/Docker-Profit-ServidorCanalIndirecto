@@ -9,6 +9,7 @@ const Datos=require('./ModelosDatos/profit_users.js');
 const AgendaTrabajo=require('./ModelosDatos/profit_agenda_trabajo.js');
 const DatosCapturados=require('./ModelosDatos/datos_capturados.js');
 const EstadisticasMercaderista=require('./ModelosDatos/profit_estadistica.js');
+const UsuariosSupervisoresIndirecto=require('./ModelosDatos/profit_usersSupervisoresIndirectos.js');
 
 //Canal Indirecto Imagenes
 var storage=multer.diskStorage({
@@ -140,6 +141,28 @@ app.post('/api/profit_insertar_usuarios',async (req,res)=>{
 	await datos.save();
 	res.json('recibido');
 });
+
+app.post('/api/profit_insertar_usuariosSupervisoresIndirecto',async(req,res)=>{
+	/* Esta funcion se utiliza para insertar usuarios a los supervisores */
+	const {
+		identificador,
+		nombre,
+		apellido,
+		password
+	}=req.body
+
+	try{
+		UsuariosSupervisoresIndirecto.deleteMany({identificador:identificador},function(err){
+			if(err){console.log("Error al Insertar usuario supervisor indirecto")}
+		})
+	}catch(e){
+		console.log(e);
+	}
+
+	const usuariosupervisor=new UsuariosSupervisoresIndirecto({identificador,nombre,apellido,password});
+	await usuariosupervisor.save();
+	res.json('recibido');
+})
 
 app.post('/api/profit_insertar_agenda',async(req,res)=>{
 	/*Esta función se utiliza para insertar la agenda de los mercaderistas*/
