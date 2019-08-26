@@ -79,6 +79,22 @@ app.get('/api/profit_estadisticas/:identificador',async (req,res)=>{
 	res.json(objeto);
 });
 
+app.get('/api/profit_DatosProfit/:fechainicial/:fechafinal',async(req,res)=>{
+	/* Esta función se utiliza para descargar data desde la base de datos */
+	// Las Fechas deben estar en formato yyyy-mm-dd
+	console.log()
+	var fechaInicial=new Date(req.params.fechainicial.split("-")[0],req.params.fechainicial.split("-")[1],req.params.fechainicial.split("-")[2]);
+	var fechaFinal=new Date(req.params.fechafinal.split("-")[0],req.params.fechafinal.split("-")[1],req.params.fechafinal.split("-")[2]);
+	const consulta=await DatosCapturados.find({fechaInserccion:{$gt:fechaInicial},fechaInserccion:{$lt:fechaFinal}},{id:1,encuesta:1,tipoEncuesta:1,fechaInserccion:1,_id:0})
+	res.json(consulta);
+});
+
+app.get('/api/profit_usuarios_supervisores/:identificador',async(req,res)=>{
+	var usuarioSupervisor=await UsuariosSupervisoresIndirecto.find({identificador:req.params.identificador});
+	res.json(usuarioSupervisor);
+})
+
+
 /*setter*/
 app.post('/api/profit_insertar_usuarios',async (req,res)=>{
 	/*Esta función se utiliza para insertar usuarios en la aplicacion*/

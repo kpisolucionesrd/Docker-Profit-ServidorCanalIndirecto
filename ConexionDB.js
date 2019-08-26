@@ -1,5 +1,6 @@
 const mongoose=require('mongoose');
 
+//const URI='mongodb://localhost:27017/CanalIndirecto';
 const URI='mongodb://dbprofit1:27017/CanalIndirecto';
 
 mongoose.connect(URI,{ useNewUrlParser: true })
